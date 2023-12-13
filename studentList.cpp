@@ -47,29 +47,18 @@ Mr. Galbraith on Canvas: https://pythontutor.com/visualize.html#mode=display
 
 #include <iostream>
 #include <cstring>
-#include <vector>
+#include "Node.h"
 
 using namespace std;
-
-//DEFINING STRUCTS:
-struct Student { //Struct code based on Mr. Galbraith's video on Structs in Canvas (link in heading notes)
-
-  char firstName[20];
-  char secondName[20];
-  int id;
-  float gpa; //a Student has a first name, last name, id, and gpa 
-};
-
 
 //FUNCTION PROTOTYPES:
 
 /*Referred to Mr. Galbraith's videos for understanding how to pass vectors by reference (link in heading notes) */
 
-void ADD(vector<Student*> &); 
-void PRINT(vector<Student*> &);
-void DELETE(vector<Student*> &);
+void ADD(Student* student);   
+void PRINT(Student* student);
+void DELETE(Student* student);
   
-
 //MAIN FUNCTION:
 
 int main() { //this is where the user will input commands to edit a student list
@@ -77,7 +66,7 @@ int main() { //this is where the user will input commands to edit a student list
 
   //Variables:
   bool running = true; //loops the student list program
-  vector<Student*> studVec; //contains pointers to the registered students
+  Student* stud1 //contains pointers to the registered students
   char input[7]; //an array to store the user's inputs (max length is 6)
 
   while (running) {
@@ -97,15 +86,15 @@ int main() { //this is where the user will input commands to edit a student list
     }
 
     else if (!strcmp(input, "ADD")) { //if the character array spells out "ADD"...
-      ADD(studVec); //add a student
+      ADD(stud1); //add a student
     }
 
     else if (!strcmp(input, "DELETE")) { //if the character array spells out "DELETE"...
-      DELETE(studVec); //delete a student
+      DELETE(stud1); //delete a student
     }
     
     else if (!strcmp(input, "PRINT")) { //if the character array spells out "PRINT"...
-      PRINT(studVec); //print out the students
+      PRINT(stud1); //print out the students
     }    
   }
   return 0;
@@ -118,7 +107,7 @@ int main() { //this is where the user will input commands to edit a student list
 creates a new student (and student pointer that is added to the vector).
  */
 
-void ADD(vector<Student*> &studVec) {
+void ADD(Student* &stud1) {
 
   //Variables:
   char firstN[20]; //new student's first name (taken from input)
@@ -154,7 +143,7 @@ void ADD(vector<Student*> &studVec) {
 /* The PRINT() function takes in the current vector of students (student pointers) and
 prints out each student registered (and their info).
 */
-void PRINT(vector<Student*> &studVec) {
+void PRINT(Student* &stud1) {
 
   cout << "Students:" << endl;
   
@@ -183,7 +172,7 @@ void PRINT(vector<Student*> &studVec) {
 /* The DELETE() function takes in the current vector of students (student pointers) and
 prompts the user for a student id. It then erases the student with that id from the student list.
 */
-void DELETE(vector<Student*> &studVec) {
+void DELETE(Student* &stud1) {
 
   //referred to this source for how to delete objects in a vector (with the .erase() command:
   //https://www.geeksforgeeks.org/cpp-stl-cheat-sheet/#T3
