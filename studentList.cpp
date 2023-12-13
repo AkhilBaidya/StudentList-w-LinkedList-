@@ -66,7 +66,7 @@ int main() { //this is where the user will input commands to edit a student list
 
   //Variables:
   bool running = true; //loops the student list program
-  Node* stud1 //contains pointers to the registered students
+  Node* stud1; //contains pointers to the registered students
   char input[7]; //an array to store the user's inputs (max length is 6)
 
   while (running) {
@@ -107,8 +107,8 @@ int main() { //this is where the user will input commands to edit a student list
 creates a new student (and student pointer that is added to the vector).
  */
 
-void ADD(Node* &stud1) {
-
+void ADD(Node* &stud1, Node* &newNode) {
+  /*
   //Variables:
   char firstN[20]; //new student's first name (taken from input)
   char lastN[20]; //new student's last name (taken from input)
@@ -135,7 +135,18 @@ void ADD(Node* &stud1) {
   (*stuPnt).gpa = GPA;
 
   studVec.push_back(stuPnt); //puts new pointer (pointing to new student created) in the vector of pointers
-  cout << "added student" << endl;
+  cout << "added student" << endl;*/
+
+  Node* next = stud1 -> getNext();
+  
+  if (next -> getStudent() -> getId() >= newNode -> getStudent() -> getId()) {
+    stud1 -> setNext(newNode);
+    newNode-> setNext(next);
+    return;
+  }
+
+  ADD(next, newNode);
+  
   
   return;
 }
@@ -153,7 +164,7 @@ void PRINT(Node* &stud1) {
   cout << student -> getFirstN() << " ";
   cout << student -> getSecondN() << ", ";
   cout << "ID: " << student -> getId() << ", ";
-  cout << "GPA: " << studnt -> getGpa() << endl;
+  cout << "GPA: " << student -> getGpa() << endl;
 
   PRINT(stud1 -> getNext()); //recurse and print out more!
   return;
@@ -185,16 +196,16 @@ void PRINT(Node* &stud1) {
 prompts the user for a student id. It then erases the student with that id from the student list.
 */
 void DELETE(Node* &stud1) {
-
+  /*
   //referred to this source for how to delete objects in a vector (with the .erase() command:
   //https://www.geeksforgeeks.org/cpp-stl-cheat-sheet/#T3
 
-  /*This source shows how the .erase() command takes the position of an object
+  This source shows how the .erase() command takes the position of an object
     in a vector and deletes the object at that position.
 
     The source also shows how the beginning position (of the first element
     in the vector) can be accessed through vectorName.begin())
-   */
+   
   
   int rmID; //the id of the student that will be removed
   int count = 0; //counts the distance each "student" is away from the beginning
@@ -208,7 +219,7 @@ void DELETE(Node* &stud1) {
 
     ++count; //increase the count (creates a "number" for each students position from studVec.begin())
 
-    if (((*student) -> id) == rmID) { //if the student's id is equal to the id being searched for..
+     if (((*student) -> id) == rmID) { //if the student's id is equal to the id being searched for..
       position = count; //this is the position of the student we want removed!
       delete (*student); //help from Mr. Galbraith for delete command (deletes the Struct pointed to by the student pointer - removes the actual student)
 
@@ -221,9 +232,9 @@ void DELETE(Node* &stud1) {
       cout << "removed student" << endl;
     }
 
-    else {
+else {
       cout << "student not found" << endl;
     }
-  
+  */
   return;
 }
