@@ -55,9 +55,9 @@ using namespace std;
 
 /*Referred to Mr. Galbraith's videos for understanding how to pass vectors by reference (link in heading notes) */
 
-void ADD(Student* student);   
-void PRINT(Student* student);
-void DELETE(Student* student);
+void ADD(Node* student);   
+void PRINT(Node* student);
+void DELETE(Node* student);
   
 //MAIN FUNCTION:
 
@@ -66,7 +66,7 @@ int main() { //this is where the user will input commands to edit a student list
 
   //Variables:
   bool running = true; //loops the student list program
-  Student* stud1 //contains pointers to the registered students
+  Node* stud1 //contains pointers to the registered students
   char input[7]; //an array to store the user's inputs (max length is 6)
 
   while (running) {
@@ -107,7 +107,7 @@ int main() { //this is where the user will input commands to edit a student list
 creates a new student (and student pointer that is added to the vector).
  */
 
-void ADD(Student* &stud1) {
+void ADD(Node* &stud1) {
 
   //Variables:
   char firstN[20]; //new student's first name (taken from input)
@@ -143,22 +143,34 @@ void ADD(Student* &stud1) {
 /* The PRINT() function takes in the current vector of students (student pointers) and
 prints out each student registered (and their info).
 */
-void PRINT(Student* &stud1) {
+void PRINT(Node* &stud1) {
 
-  cout << "Students:" << endl;
-  
+  if (stud1 -> getNext() == NULL) {
+    return;
+  }
+
+  Student* student = stud1 -> getStudent();
+  cout << student -> getFirstN() << " ";
+  cout << student -> getSecondN() << ", ";
+  cout << "ID: " << student -> getId() << ", ";
+  cout << "GPA: " << studnt -> getGpa() << endl;
+
+  PRINT(stud1 -> getNext()); //recurse and print out more!
+  return;
+    
+    /*
   for (vector<Student*>::iterator student = studVec.begin(); student != studVec.end(); student++) { //iterate through each student in the vector
 
-    /*referred to Mr. Galbraith's video on Vectors in Canvas to learn about using "->" to access aspects of an object pointed at
-     (link in heading comments)*/
+    referred to Mr. Galbraith's video on Vectors in Canvas to learn about using "->" to access aspects of an object pointed at
+     (link in heading comments)
 
     cout << (*student) -> firstName << " "; //print out the first and last name of the student
     cout << (*student) -> secondName << ", ";
 
     cout << "ID: " << (*student) -> id << ", "; //print out the student's id
 
-    /*referred to Mr. Galbraith's video on Formatting Outputs in Canvas to learn about .setf() and .precision()
-      (link in heading comments)*/
+    referred to Mr. Galbraith's video on Formatting Outputs in Canvas to learn about .setf() and .precision()
+      (link in heading comments)
     
     cout.setf(ios::showpoint); //want trailing zeroes in gpa (5 as 5.00)
     cout.precision(3); //restrict precision to three, allowing two decimal places for gpa
@@ -166,13 +178,13 @@ void PRINT(Student* &stud1) {
   }
   
   return;
-
+*/
 }
 
 /* The DELETE() function takes in the current vector of students (student pointers) and
 prompts the user for a student id. It then erases the student with that id from the student list.
 */
-void DELETE(Student* &stud1) {
+void DELETE(Node* &stud1) {
 
   //referred to this source for how to delete objects in a vector (with the .erase() command:
   //https://www.geeksforgeeks.org/cpp-stl-cheat-sheet/#T3
