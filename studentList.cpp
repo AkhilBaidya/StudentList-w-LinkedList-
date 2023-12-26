@@ -39,9 +39,17 @@ int main() { //this is where the user will input commands to edit a student list
   //Variables:
   
   bool running = true; //loops the student list program
-  Node* header; //the "head" or dummy student at the beginning of the linked list
+
+  char dumName1[20] = "Dummy";
+  char dumName2[20] = "Student";
+  int id = 0;
+  float gpa = 0.00;
+  Student* student = new Student(id, gpa, dumName1, dumName2);
+  Node* header = new Node(student); //the "head" or dummy student at the beginning of the linked list
+  header -> setNext(NULL);
   char input[8]; //an array to store the user's inputs
 
+  
   while (running) {
     
     cout << "What would you like to do? (ADD, DELETE, PRINT Students, AVERAGE gpas, QUIT program)" << endl;
@@ -78,8 +86,10 @@ int main() { //this is where the user will input commands to edit a student list
       cout << "GPA?" << endl;
       cin >> gpa;
 
+      cout << "making student" << endl;
       Student* student = new Student(id, gpa, firstN, secN);
       Node* newNode = new Node(student);
+      cout << "still making student" << endl;
 
       ADD(header, newNode); //add a student
       cout << "Student added" << endl;
@@ -116,15 +126,20 @@ creates a new student (and student pointer that is added to the vector).
  */
 
 void ADD(Node* &prevNode, Node* &newNode) {
-  
+
+  cout << "entered ADD'" << endl;
   Node* next = prevNode -> getNext();
+
+  if (next == NULL) {
+    prevNode -> setNext(newNode);
+    return;
+  }
   
-  if (next -> getStudent() -> getId() >= newNode -> getStudent() -> getId()) { //if the next node after the prev node is greater in ID than the node we want to add, then add the new node right in front of the prev node
+  else if (next -> getStudent() -> getId() >= newNode -> getStudent() -> getId()) { //if the next node after the prev node is greater in ID than the node we want to add, then add the new node right in front of the prev node
 
     prevNode -> setNext(newNode); //set the next node of the prev node to our new node
     newNode-> setNext(next); //the next node that was replaced now becomes the next node of the new node added
-    return;
-    
+    return;  
   }
 
   ADD(next, newNode); //for the sorting, continue doing this check for next nodes if the first next node was lesser in id than the new node we wanted to add
@@ -141,6 +156,12 @@ void PRINT(Node* &header) {
   Node* next = header -> getNext();
   
   if (next == NULL) {
+  Student* student = header -> getStudent(); //get the student one last time
+  cout << student -> getFirstN() << " ";
+  cout << student -> getSecondN() << ", ";
+  cout << "ID: " << student -> getId() << ", ";
+  cout << "GPA: " << student -> getGpa() << endl;
+
     return; //there are no students to print
   }
 
