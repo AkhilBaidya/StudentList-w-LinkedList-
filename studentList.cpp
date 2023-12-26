@@ -28,7 +28,7 @@ void ADD(Node* &prevNode, Node* &newNode);
 void PRINT(Node* &header);
 void DELETE(Node* &header, int id);
 bool QUIT(Node* &header);
-void AVERAGE(Node* &header);
+float AVERAGE(Node* &header, float total, int num);
 
   
 //MAIN FUNCTION:
@@ -56,7 +56,7 @@ int main() { //this is where the user will input commands to edit a student list
 
     if (!strcmp(input, "QUIT")) { //if the character array (user input) spells out "QUIT"...
       cout << "quitting student list program" << endl;
-      QUIT(header, running); //quit the program! (the program continues and loops if running = true)
+      running = QUIT(header); //quit the program! (the program continues and loops if running = true)
     }
 
     else if (!strcmp(input, "ADD")) { //if the character array spells out "ADD"...
@@ -82,10 +82,15 @@ int main() { //this is where the user will input commands to edit a student list
       Node* newNode = new Node(student);
 
       ADD(header, newNode); //add a student
+      cout << "Student added" << endl;
     }
 
     else if (!strcmp(input, "DELETE")) { //if the character array spells out "DELETE"...
-      DELETE(header); //delete a student
+      int id;
+      cout << "What is the ID of the student you want to delete?" << endl;
+      cin >> id;
+      DELETE(header, id); //delete a student
+      cout << "Deleted student" << endl;
     }
     
     else if (!strcmp(input, "PRINT")) { //if the character array spells out "PRINT"...
@@ -93,8 +98,10 @@ int main() { //this is where the user will input commands to edit a student list
     }
 
     else if (!strcmp(input, "AVERAGE")) {
+      float avgpa;
+      avgpa = AVERAGE(header, 0.00, 0);
 
-      AVERAGE(header);
+      cout << "The average student GPA is " << avgpa << endl;
     }
   }
   return 0;
@@ -184,6 +191,18 @@ bool QUIT(Node* &header) {
   return false;
 }
 
-void AVERAGE(Node* &header) {
-  return;
+float AVERAGE(Node* &header, float total, int num) {
+  Node* nextNode = header -> getNext();
+  float gpa = header -> getStudent() -> getGpa();
+
+  if (nextNode == NULL) {
+    total += gpa;
+    num++;
+    return (total/num);
+  }
+  
+  total += gpa;
+  num++;
+  AVERAGE(nextNode, total, num);
+  return (total/num);
 }
