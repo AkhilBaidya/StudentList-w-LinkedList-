@@ -16,48 +16,20 @@ exits the program.
    3. PRINT displays all the students currently registered in the student list and their info.
  */
 
-
-/* Credits: 
-
-1. In order to understand the syntax of creating vectors and passing them in by reference in function prototypes and functions, Mr. Galbraith's video on Vectors in Canvas was observed: https://www.youtube.com/watch?v=KD_pItB8Ygg&t=1s (video url).
-
-The same video was also referred to in order to understand how to deference pointers (with (*pointerName)) and access aspects of the object the pointer is pointed towards using "->."
-
-The same video was also used to write the iterator when printing out the students in the student vector in the PRINT function.
-
-
-2. Referred to cplusplus.com (https://cplusplus.com/reference/cctype/toupper/) to find toupper() command which was used to standardize user command inputs (such as "PRINT" or "pRinT") to upper case.
-
-
-3.Referred to GeeksforGeeks website for learning how to delete objects in a vector (with the .erase() command):https://www.geeksforgeeks.org/cpp-stl-cheat-sheet/#T3
-
-This source shows how the .erase() command takes the position of an object in a vector and deletes the object at that position. The source also shows how the beginning position (of the first element in the vector) can be accessed through vectorName.begin())
-
-4. Code for making Structs was based on Mr. Galbraith's video on Structs in Canvas:https://www.youtube.com/watch?v=vMCKhGuROnk&t=1s
-
-5. Code for adding trailing zeroes and changing the preciseness of numbers when printed out was based on Mr. Galbraith's video on Formatting Outputs in Canvas:
-https://www.youtube.com/watch?v=kv8XRxxaD8Q&t=290s
-
-6. Learned how to create pointer, such as Student* stuPnt = new Student;, based on the Double Pointer visualizer provided by 
-Mr. Galbraith on Canvas: https://pythontutor.com/visualize.html#mode=display
-
-7. Help from Mr. Galbraith for learning about "delete" command (to remove a student Struct)
-*/
-
-
 #include <iostream>
 #include <cstring>
-#include "Node.h"
+#include "Node.o"
 
 using namespace std;
 
 //FUNCTION PROTOTYPES:
 
-/*Referred to Mr. Galbraith's videos for understanding how to pass vectors by reference (link in heading notes) */
+void ADD(Node* &header);   
+void PRINT(Node* &header);
+void DELETE(Node* &header);
+void QUIT(Node* &header, bool &running);
+void AVERAGE(Node* &header);
 
-void ADD(Node* student);   
-void PRINT(Node* student);
-void DELETE(Node* student);
   
 //MAIN FUNCTION:
 
@@ -65,13 +37,15 @@ int main() { //this is where the user will input commands to edit a student list
 
 
   //Variables:
+  
   bool running = true; //loops the student list program
-  Node* stud1; //contains pointers to the registered students
-  char input[7]; //an array to store the user's inputs (max length is 6)
+  Node* header; //the "head" or dummy student at the beginning of the linked list
+  char input[8]; //an array to store the user's inputs
 
   while (running) {
     
-    cout << "What would you like to do? (ADD, DELETE, PRINT Students, QUIT program)" << endl;
+    cout << "What would you like to do? (ADD, DELETE, PRINT Students, AVERAGE gpas, QUIT program)" << endl;
+    
     cin >> input;
 
     for (int i = 0; i < strlen(input); i++) {
@@ -82,23 +56,29 @@ int main() { //this is where the user will input commands to edit a student list
 
     if (!strcmp(input, "QUIT")) { //if the character array (user input) spells out "QUIT"...
       cout << "quitting student list program" << endl;
-      running = false; //quit the program! (the program continues and loops if running = true)
+      QUIT(header, running); //quit the program! (the program continues and loops if running = true)
     }
 
     else if (!strcmp(input, "ADD")) { //if the character array spells out "ADD"...
-      ADD(stud1); //add a student
+      ADD(header); //add a student
     }
 
     else if (!strcmp(input, "DELETE")) { //if the character array spells out "DELETE"...
-      DELETE(stud1); //delete a student
+      DELETE(header); //delete a student
     }
     
     else if (!strcmp(input, "PRINT")) { //if the character array spells out "PRINT"...
-      PRINT(stud1); //print out the students
-    }    
+      PRINT(header); //print out the students
+    }
+
+    else if (!strcmp(input, "AVERAGE")) {
+
+      AVERAGE(header);
+    }
   }
   return 0;
 }
+
 
 //OTHER FUNCTIONS IMPLEMENTED IN MAIN FUNCTION:
 
