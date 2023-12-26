@@ -24,7 +24,7 @@ using namespace std;
 
 //FUNCTION PROTOTYPES:
 
-void ADD(Node* &header);   
+void ADD(Node* &prevNode, Node* &newNode);   
 void PRINT(Node* &header);
 void DELETE(Node* &header);
 void QUIT(Node* &header, bool &running);
@@ -60,7 +60,28 @@ int main() { //this is where the user will input commands to edit a student list
     }
 
     else if (!strcmp(input, "ADD")) { //if the character array spells out "ADD"...
-      ADD(header); //add a student
+      cout << "Please input the information for the new student" << endl;
+
+      char firstN[20];
+      cout << "First name?" << endl;
+      cin >> firstN;
+
+      char secN[20];
+      cout << "Second name?" << endl;
+      cin >> secN;
+      
+      int id;
+      cout << "ID?" << endl;
+      cin >> id;
+      
+      float gpa;
+      cout << "GPA?" << endl;
+      cin >> gpa;
+
+      Student* student = new Student(id, gpa, firstN, secN);
+      Node* newNode = new Node(student);
+
+      ADD(header, newNode); //add a student
     }
 
     else if (!strcmp(input, "DELETE")) { //if the character array spells out "DELETE"...
@@ -87,49 +108,23 @@ int main() { //this is where the user will input commands to edit a student list
 creates a new student (and student pointer that is added to the vector).
  */
 
-void ADD(Node* &stud1, Node* &newNode) {
-  /*
-  //Variables:
-  char firstN[20]; //new student's first name (taken from input)
-  char lastN[20]; //new student's last name (taken from input)
-  int ID; // new student's id (taken from input)
-  float GPA; // new student's gpa (taken from input)
-  Student* stuPnt = new Student; //create a new pointer to a new Struct (a new Student)
-  //(learned how to create pointer from Double Pointer visualizer provided in Canvas at https://pythontutor.com/visualize.html#mode=display)  
+void ADD(Node* &prevNode, Node* &newNode) {
   
-  //Ask for new student details:
-  cout << "what is the first name of the student?" << endl; //adding new first name
-  cin >> firstN;
-  strcpy((*stuPnt).firstName, firstN); //need to dereference pointer to set variables in new Struct (new student) equal to inputs (through strcpy())
-
-  cout << "last name?" << endl; //do the same for the new last name
-  cin >> lastN;
-  strcpy((*stuPnt).secondName, lastN);
-
-  cout << "id?" << endl; //do the same for the new id
-  cin >> ID;
-  (*stuPnt).id = ID;
-
-  cout << "GPA?" << endl; //do the same for the new gpa
-  cin >> GPA;
-  (*stuPnt).gpa = GPA;
-
-  studVec.push_back(stuPnt); //puts new pointer (pointing to new student created) in the vector of pointers
-  cout << "added student" << endl;*/
-
-  Node* next = stud1 -> getNext();
+  Node* next = prevNode -> getNext();
   
-  if (next -> getStudent() -> getId() >= newNode -> getStudent() -> getId()) {
-    stud1 -> setNext(newNode);
-    newNode-> setNext(next);
+  if (next -> getStudent() -> getId() >= newNode -> getStudent() -> getId()) { //if the next node after the prev node is greater in ID than the node we want to add, then add the new node right in front of the prev node
+
+    prevNode -> setNext(newNode); //set the next node of the prev node to our new node
+    newNode-> setNext(next); //the next node that was replaced now becomes the next node of the new node added
     return;
+    
   }
 
-  ADD(next, newNode);
-  
+  ADD(next, newNode); //for the sorting, continue doing this check for next nodes if the first next node was lesser in id than the new node we wanted to add
   
   return;
 }
+
 
 /* The PRINT() function takes in the current vector of students (student pointers) and
 prints out each student registered (and their info).
