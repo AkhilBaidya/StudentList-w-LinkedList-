@@ -27,7 +27,7 @@ using namespace std;
 void ADD(Node* &prevNode, Node* &newNode);   
 void PRINT(Node* &header);
 void DELETE(Node* &header, int id);
-void QUIT(Node* &header, bool &running);
+bool QUIT(Node* &header);
 void AVERAGE(Node* &header);
 
   
@@ -169,7 +169,18 @@ void DELETE(Node* &header, int id) {
   return;
 }
 
-bool QUIT(Node* &header, bool running) {
+bool QUIT(Node* &header) {
+
+  if (header -> getNext() == NULL) {
+    delete header;
+    return false;
+  }
+
+  Node* nextNode = header -> getNext();
+  header -> setNext(NULL);
+  delete header;
+
+  QUIT(nextNode, running);
   return false;
 }
 
