@@ -138,7 +138,9 @@ prints out each student registered (and their info).
 */
 void PRINT(Node* &header) {
 
-  if (header -> getNext() == NULL) {
+  Node* next = header -> getNext();
+  
+  if (next == NULL) {
     return; //there are no students to print
   }
 
@@ -148,7 +150,7 @@ void PRINT(Node* &header) {
   cout << "ID: " << student -> getId() << ", ";
   cout << "GPA: " << student -> getGpa() << endl;
 
-  PRINT(header -> getNext()); //recurse and print out more!
+  PRINT(next); //recurse and print out more!
   return;
 }
 
@@ -187,7 +189,7 @@ bool QUIT(Node* &header) {
   header -> setNext(NULL);
   delete header;
 
-  QUIT(nextNode, running);
+  QUIT(nextNode);
   return false;
 }
 
