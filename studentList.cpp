@@ -18,7 +18,7 @@ exits the program.
 
 #include <iostream>
 #include <cstring>
-#include "Node.o"
+#include "node.h"
 
 using namespace std;
 
