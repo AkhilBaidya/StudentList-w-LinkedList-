@@ -28,8 +28,7 @@ void ADD(Node* &prevNode, Node* &newNode);
 void PRINT(Node* &header);
 void DELETE(Node* &header, int id);
 bool QUIT(Node* &header);
-float AVERAGE(Node* &header, float total, int num);
-
+float AVERAGE(Node* &header, float &total, int &num);
   
 //MAIN FUNCTION:
 
@@ -109,7 +108,9 @@ int main() { //this is where the user will input commands to edit a student list
 
     else if (!strcmp(input, "AVERAGE")) {
       float avgpa;
-      avgpa = AVERAGE(header, 0.00, 0);
+      float begTot = 0;
+      int begNum = 0;
+      avgpa = AVERAGE(header, begTot, begNum);
 
       cout << "The average student GPA is " << avgpa << endl;
     }
@@ -214,18 +215,20 @@ bool QUIT(Node* &header) {
   return false;
 }
 
-float AVERAGE(Node* &header, float total, int num) {
+float AVERAGE(Node* &header, float &total, int &num) {
+  if (header == NULL) {
+    return -1.5;
+  }
   Node* nextNode = header -> getNext();
   float gpa = header -> getStudent() -> getGpa();
-
+  num++;
+  
   if (nextNode == NULL) {
     total += gpa;
-    num++;
-    return (total/num);
+    return total/num;
   }
-  
+
   total += gpa;
-  num++;
-  AVERAGE(nextNode, total, num);
-  return (total/num);
+  return (0 + AVERAGE(nextNode, total, num));
 }
+
