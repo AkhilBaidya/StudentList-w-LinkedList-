@@ -114,7 +114,8 @@ int main() {
       float begTot = 0; //this will store the sum of current gpas
       int begNum = 0; //this will store the number of current students
 
-      avgpa = AVERAGE(header -> getNext(), begTot, begNum); //get the gpa
+      Node* afterHead = header -> getNext(); //we don't want to count the header in the average
+      avgpa = AVERAGE(afterHead, begTot, begNum); //get the gpa
 
       if (avgpa < 0) { //the AVERAGE function returns -1.5 if there are no students
 	cout << "There are no students" << endl;
@@ -160,15 +161,17 @@ void PRINT(Node* &header) {
   
   if (next == NULL) { //this is the last node in the linked list
     Student* student = header -> getStudent(); //get the student and print out their details one last time
-    cout << student -> getFirstN() << " ";
-    cout << student -> getSecondN() << ", ";
-    cout << "ID: " << student -> getId() << ", ";
+
+    if (student -> getId() >= 0) { //this node is not the header node of the linked list (which has a negative id)
+      cout << student -> getFirstN() << " ";
+      cout << student -> getSecondN() << ", ";
+      cout << "ID: " << student -> getId() << ", ";
 
     //This code to set the formatting of the output was taken from Mr. Galbraith's video on Canvas on Formatting Outputs at https://www.youtube.com/watch?v=kv8XRxxaD8Q&t=232s
-    cout.setf(ios::showpoint); //allow trailing zeroes to be seen
-    cout.precision(3); //allow for only two decimal places to be seen
-  cout << "GPA: " << student -> getGpa() << endl;
-
+      cout.setf(ios::showpoint); //allow trailing zeroes to be seen
+      cout.precision(3); //allow for only two decimal places to be seen
+      cout << "GPA: " << student -> getGpa() << endl;
+    }
     return; //there are no more students to print
   }
 
