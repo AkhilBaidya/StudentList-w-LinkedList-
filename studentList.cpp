@@ -41,11 +41,11 @@ int main() { //this is where the user will input commands to edit a student list
 
   char dumName1[20] = "Dummy";
   char dumName2[20] = "Student";
-  int id = 0;
+  int id = -1;
   float gpa = 0.00;
   Student* student = new Student(id, gpa, dumName1, dumName2);
   Node* header = new Node(student); //the "head" or dummy student at the beginning of the linked list
-  header -> setNext(NULL);
+  header -> setNext(NULL); //it has no next node yet
   char input[8]; //an array to store the user's inputs
 
   
@@ -67,14 +67,14 @@ int main() { //this is where the user will input commands to edit a student list
     }
 
     else if (!strcmp(input, "ADD")) { //if the character array spells out "ADD"...
-      cout << "Please input the information for the new student" << endl;
+      cout << "Please input the new student details" << endl;
 
       char firstN[20];
       cout << "First name?" << endl;
       cin >> firstN;
 
       char secN[20];
-      cout << "Second name?" << endl;
+      cout << "Last name?" << endl;
       cin >> secN;
       
       int id;
@@ -85,13 +85,11 @@ int main() { //this is where the user will input commands to edit a student list
       cout << "GPA?" << endl;
       cin >> gpa;
 
-      cout << "making student" << endl;
       Student* student = new Student(id, gpa, firstN, secN);
       Node* newNode = new Node(student);
-      cout << "still making student" << endl;
-
+      
       ADD(header, newNode); //add a student
-      cout << "Student added" << endl;
+      cout << "Added student" << endl;
     }
 
     else if (!strcmp(input, "DELETE")) { //if the character array spells out "DELETE"...
@@ -112,7 +110,12 @@ int main() { //this is where the user will input commands to edit a student list
       int begNum = 0;
       avgpa = AVERAGE(header, begTot, begNum);
 
-      cout << "The average student GPA is " << avgpa << endl;
+      if (avgpa < 0) {
+	cout << "There are no students" << endl;
+      }
+      else {
+	cout << "The average student GPA is " << avgpa << endl;
+      }
     }
   }
   return 0;
@@ -161,17 +164,24 @@ void PRINT(Node* &header) {
   cout << student -> getFirstN() << " ";
   cout << student -> getSecondN() << ", ";
   cout << "ID: " << student -> getId() << ", ";
+  cout.setf(ios::showpoint);
+  cout.precision(3); //from mr galbraith video https://www.youtube.com/watch?v=kv8XRxxaD8Q&t=232s
   cout << "GPA: " << student -> getGpa() << endl;
 
     return; //there are no students to print
   }
 
   Student* student = header -> getStudent(); //get the student
-  cout << student -> getFirstN() << " ";
-  cout << student -> getSecondN() << ", ";
-  cout << "ID: " << student -> getId() << ", ";
-  cout << "GPA: " << student -> getGpa() << endl;
 
+  if (student -> getId() >= 0) { //meaning the student is not the dummy student
+    cout << student -> getFirstN() << " ";
+    cout << student -> getSecondN() << ", ";
+    cout << "ID: " << student -> getId() << ", ";
+    cout.setf(ios::showpoint);
+    cout.precision(3);
+    cout << "GPA: " << student -> getGpa() << endl;
+  }
+  
   PRINT(next); //recurse and print out more!
   return;
 }
@@ -211,7 +221,7 @@ bool QUIT(Node* &header) {
   header -> setNext(NULL);
   delete header;
 
-  QUIT(nextNode);
+  QUIT(nextNode); //recursively delete every node
   return false;
 }
 
