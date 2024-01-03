@@ -117,6 +117,10 @@ int main() {
       Node* afterHead = header -> getNext(); //we don't want to count the header in the average
       avgpa = AVERAGE(afterHead, begTot, begNum); //get the gpa
 
+    //This code to set the formatting of the output was taken from Mr. Galbraith's video on Canvas on Formatting Outputs at https://www.youtube.com/watch?v=kv8XRxxaD8Q&t=232s
+      cout.setf(ios::showpoint); //allow trailing zeroes to be seen
+      cout.precision(3); //allow for only two decimal places to be seen
+      
       if (avgpa < 0) { //the AVERAGE function returns -1.5 if there are no students
 	cout << "There are no students" << endl;
       }
