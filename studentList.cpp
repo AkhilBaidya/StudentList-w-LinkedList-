@@ -7,13 +7,17 @@
 The user can input the commands "ADD," "DELETE," "PRINT," "AVERAGE," and "QUIT."
 
    1. ADD registers a new student in the list. The user inputs the student's names,
-   id, and gpa (the id and gpa must be inputted as numbers).
+   id, and gpa (the id and gpa must be inputted as numbers and the id should be non-negative).
 
    2. DELETE removes a student from the student list. The user must input a student
    id to identify this student to be removed.
 
    3. PRINT displays all the students currently registered in the student list and their info.
- */
+
+   4. AVERAGE calculates the average gpa of all the students registered in the student list
+
+   5. QUIT deletes all of the students from the student list and exits the program
+*/
 
 #include <iostream>
 #include <cstring>
@@ -211,36 +215,40 @@ void DELETE(Node* &header, int id) {
 }
 
 
-/**/
+/*The QUIT() function takes in a node from the linked list to enter the linked list (this should be the dummy node at the head of the linked list). It recurses through each node and deletes it from the program, finally returning false (which can be used to end a loop)*/
 bool QUIT(Node* &header) {
 
-  if (header -> getNext() == NULL) {
-    delete header;
+  if (header -> getNext() == NULL) { //the program has reached the end of the linkde list
+    delete header; //delete the current node
     return false;
   }
 
-  Node* nextNode = header -> getNext();
-  header -> setNext(NULL);
+  Node* nextNode = header -> getNext(); //get the next node
+  
+  header -> setNext(NULL); //disconnect the current node from the one following it before deleting the current node
   delete header;
 
-  QUIT(nextNode); //recursively delete every node
+  QUIT(nextNode); //run the deleting function on the next node
   return false;
 }
 
+
+/*The AVERAGE() function recursively goes through each node in the linked list, counts the number of students and adds their gpa to a total, and carries over this count and total through each recursive step until reaching the final node. At the final node, the function returns the average gpa by dividing the total by the number ofstudents*/
 float AVERAGE(Node* &header, float &total, int &num) {
-  if (header == NULL) {
+  if (header == NULL) { //this will occur if there are no students in the linked list
     return -1.5;
   }
-  Node* nextNode = header -> getNext();
-  float gpa = header -> getStudent() -> getGpa();
-  num++;
   
-  if (nextNode == NULL) {
+  Node* nextNode = header -> getNext();
+  float gpa = header -> getStudent() -> getGpa(); //get the gpa of the current node's student
+  num++; //add one to the total count of students
+  
+  if (nextNode == NULL) { //when reaching the end of the linked list
     total += gpa;
-    return total/num;
+    return total/num; //return the average gpa by dividing the total gpa by the number of students
   }
 
-  total += gpa;
-  return (0 + AVERAGE(nextNode, total, num));
+  total += gpa; //add the currently found gpa to the total gpa
+  return (0 + AVERAGE(nextNode, total, num)); //do this caluclation for the next node, carrying over the current total gpa and number of students
 }
 
